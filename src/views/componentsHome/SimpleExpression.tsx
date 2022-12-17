@@ -11,20 +11,21 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
 import CleaningServicesIcon from '@mui/icons-material/CleaningServices';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Divider from '@mui/material/Divider';
 
 import * as Colors from '../../constants/colors';
 import IColumn from '../interfacesHome/IColumn';
-import IArrayColumn from '../interfacesHome/IArrayColumn';
+import SimpleExpressionProps from '../interfacesHome/SimpleExpressionProps';
 
 
 
-function SimpleExpression( propColumns : IArrayColumn ) {
+function SimpleExpression(  propColumns : SimpleExpressionProps ) {
 
   const comparatorsList = ['=', 'diferente']
   const comparatorsListNumber = ['=', '<', '>']
 
-
+  const id = propColumns.id;
 
   const columns : IColumn[] = propColumns.columns;
 
@@ -214,6 +215,12 @@ function SimpleExpression( propColumns : IArrayColumn ) {
           <IconButton sx={{width:35, height:35}} onClick={ resetState }>
             <CleaningServicesIcon sx={{color: Colors.ICESI_COLOR}}/>
           </IconButton>
+
+          { id != 0 &&
+            <IconButton sx={{width:35, height:35}}  >
+              <DeleteForeverIcon sx={{color: Colors.ICESI_COLOR}}/>
+            </IconButton>
+          }
 
         </Box>
         <Divider color={Colors.ICESI_COLOR} sx={{height:2, borderRadius:2, my:3}}/>
