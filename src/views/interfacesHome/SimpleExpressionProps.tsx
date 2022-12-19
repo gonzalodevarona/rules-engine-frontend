@@ -3,5 +3,8 @@ import IColumn from "./IColumn";
 export default interface SimpleExpressionProps {
     id:Number,
     columns: IColumn[],
-    deleteFunction : any
+    selfDeleteFunction : any,
+    isNextViewTriggered : boolean,
+    handleExpressionsInfoChange : any
+
   }

@@ -1,17 +1,19 @@
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import * as Colors from '../constants/colors';
 import '../index.css';
 
 import IColumn from './interfacesHome/IColumn';
-import SimpleExpressionProps from './interfacesHome/SimpleExpressionProps'
+import * as Styles from '../constants/styles'
 import SimpleExpression from './componentsHome/SimpleExpression';
+
 
 function Home() {
 
-  
 
   const resetCounter = () =>{
     const arrayLength = simpleExpressions.length;
@@ -21,12 +23,22 @@ function Home() {
       return simpleExpressions[arrayLength-1].id + 1;
     }
   }
-  
 
+
+  
+  const [expressionsInfo, setExpressionsInfo] = useState<any>([]);
+
+  const handleExpressionsInfoChange = (expressionId : any, value : any) => {
+    setExpressionsInfo({ ...expressionsInfo, [expressionId]: value });
+  };
+
+  
   const [simpleExpressions, setSimpleExpressions] = useState<any>([]);
   
   const [idCount, setIdCount] = useState(resetCounter());
 
+  const [isNextViewTriggered, setIsNextViewTriggered] = useState(false);
+  
   const [disableAddSimpleExpressions, setDisableAddSimpleExpressions] = useState(false);
 
 
@@ -53,14 +65,16 @@ function Home() {
   const addSimpleExpression = () =>{
     setSimpleExpressions((oldArray: any)  => 
     [ ...oldArray, 
-      {id:idCount, element:<SimpleExpression id = {idCount} columns = {columns} deleteFunction={deleteSimpleExpression}/>}
+      {id:idCount, element:<SimpleExpression id = {idCount} columns = {columns} selfDeleteFunction={deleteSimpleExpression} isNextViewTriggered={isNextViewTriggered} handleExpressionsInfoChange={handleExpressionsInfoChange}/>}
     ])
 
     setIdCount(idCount+1);
   }
 
-  const deleteSimpleExpression = () =>{
+  const deleteSimpleExpression = (idToDelete : Number) =>{
+    const newArr = simpleExpressions.filter((item:any) => item.id != idToDelete);
     
+    setSimpleExpressions(newArr);
   }
 
   const renderSimpleExpressions = () => {
@@ -71,8 +85,12 @@ function Home() {
   
 
 
+  useEffect(() => {
+    console.log(expressionsInfo)
+  }, [expressionsInfo])
+  
   return (
-    <Box sx={{mx:'20%'}}>
+    <Stack sx={{mx:'20%'}}>
       <Box 
         display="flex" 
         alignItems="center"
@@ -86,7 +104,7 @@ function Home() {
       <Box>
         <Box padding={4}>Expresiones Simples</Box>
         <Box>
-          <SimpleExpression id={0} columns = {columns} deleteFunction={deleteSimpleExpression}/>
+          <SimpleExpression id={0} columns = {columns} selfDeleteFunction={deleteSimpleExpression} isNextViewTriggered={isNextViewTriggered} handleExpressionsInfoChange={handleExpressionsInfoChange}/>
           
           {renderSimpleExpressions()}
           
@@ -100,8 +118,21 @@ function Home() {
           <AddCircleIcon sx={{fontSize: 50}} />
         </IconButton>
 
+        
+
       </Box>
-    </Box>
+      <Box sx={{display:"flex" ,
+        
+        justifyContent:"end" }}>
+        <Button 
+          variant="contained"
+          sx={Styles.BIG_BTN_STYLE}
+          onClick={() => setIsNextViewTriggered(true)}
+          >
+            Siguiente ➡
+        </Button>
+      </Box>
+    </Stack>
   )
 }
 

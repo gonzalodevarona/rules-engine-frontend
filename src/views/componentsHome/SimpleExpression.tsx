@@ -15,6 +15,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import Divider from '@mui/material/Divider';
 
 import * as Colors from '../../constants/colors';
+import * as Styles from '../../constants/styles';
 import IColumn from '../interfacesHome/IColumn';
 import SimpleExpressionProps from '../interfacesHome/SimpleExpressionProps';
 
@@ -31,7 +32,9 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
 
   const [operations, setOperations] = useState<string[]>([]);
 
+  const [isNextLineDisabled, setIsNextLineDisabled] = useState(true);
 
+  
 
   const [selectedColumn, setSelectedColumn] = useState<IColumn>(columns[0]);
 
@@ -41,8 +44,32 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
 
   const [nextLineValue, setNextLineValue] = useState('');
 
-  const formControlStyle = {minWidth: 150};
 
+
+  useEffect(() => {
+    if(selectedOperator != ''){
+      setIsNextLineDisabled(false);
+    } else{
+      setIsNextLineDisabled(true);
+    }
+  
+  }, [selectedOperator])
+
+  useEffect(() => {
+    
+    const expressionInfo = {
+      column: selectedColumn,
+      operator: selectedOperator,
+      nextType: selectedNextLine,
+      nextValue: nextLineValue
+    
+    }
+    propColumns.handleExpressionsInfoChange(id, expressionInfo);
+    
+
+    
+  }, [selectedColumn, selectedOperator, selectedNextLine, nextLineValue])
+  
   const resetState = () => {
     setSelectedColumn(columns[0]);
     setSelectedOperator('');
@@ -99,14 +126,14 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
 
   const fillDropdownMenuFiltered = (typeFilter : string) => {
 
-     const x = columns
+     const columnsFiltered = columns
         .filter(col => col.type === typeFilter)
         .map((col : IColumn) => (
           // @ts-ignore
           <MenuItem value={col}>{col.name}</MenuItem>
         ));
 
-        return x;
+        return columnsFiltered;
   };
 
   const fillOperationDropdownMenu = () => {
@@ -125,9 +152,9 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
   const renderNextLine = () => {
 
     if(selectedNextLine === 'value'){
-     return <TextField onChange={handleNextLineChange} id="outlined-basic" variant="outlined" />
+     return <TextField disabled={isNextLineDisabled} onChange={handleNextLineChange} id="outlined-basic" variant="outlined" />
     } else{
-     return <FormControl style={formControlStyle}>
+     return <FormControl disabled={isNextLineDisabled} style={Styles.SMALL_FIELD_W}>
                <Select
                  labelId="demo-simple-select-label"
                  id="demo-simple-select"
@@ -164,7 +191,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
             }}
           >
             
-            <FormControl style={formControlStyle}>
+            <FormControl style={Styles.SMALL_FIELD_W}>
               <InputLabel id="demo-simple-select-label">Columna</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -178,7 +205,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
               </Select>
             </FormControl> 
 
-            <FormControl style={formControlStyle}>
+            <FormControl style={Styles.SMALL_FIELD_W}>
               <InputLabel id="demo-simple-select-label">Operación</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
@@ -191,7 +218,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
               </Select>
             </FormControl>
 
-            <FormControl>
+            <FormControl disabled={isNextLineDisabled}>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="controlled-radio-buttons-group"
@@ -217,13 +244,15 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
           </IconButton>
 
           { id != 0 &&
-            <IconButton sx={{width:35, height:35}}  >
+            <IconButton sx={{width:35, height:35}} onClick={() => propColumns.selfDeleteFunction(id) } >
               <DeleteForeverIcon sx={{color: Colors.ICESI_COLOR}}/>
             </IconButton>
           }
 
         </Box>
         <Divider color={Colors.ICESI_COLOR} sx={{height:2, borderRadius:2, my:3}}/>
+
+        
     </Stack>
   )
 }
