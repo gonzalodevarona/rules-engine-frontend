@@ -16,8 +16,9 @@ import Divider from '@mui/material/Divider';
 
 import * as Colors from '../../constants/colors';
 import * as Styles from '../../constants/styles';
-import IColumn from '../interfacesHome/IColumn';
-import SimpleExpressionProps from '../interfacesHome/SimpleExpressionProps';
+import IColumn from '../interfacesExpressions/IColumn';
+import SimpleExpressionProps from '../interfacesExpressions/SimpleExpressionProps';
+
 
 
 
@@ -34,7 +35,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
 
   const [isNextLineDisabled, setIsNextLineDisabled] = useState(true);
 
-  
+
 
   const [selectedColumn, setSelectedColumn] = useState<IColumn>(columns[0]);
 
@@ -64,6 +65,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
       nextValue: nextLineValue
     
     }
+
     propColumns.handleExpressionsInfoChange(id, expressionInfo);
     
 
