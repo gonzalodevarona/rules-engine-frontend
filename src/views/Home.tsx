@@ -37,7 +37,8 @@ function Home() {
             alignItems="center"
             justifyContent="center" 
             className='font-LexendBold'
-            margin={'4%'}
+            margin={'3%'}
+            marginTop={11}
             >
                 Motor de Reglas ⚙️
             </Box>

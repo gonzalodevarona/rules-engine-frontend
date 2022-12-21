@@ -15,7 +15,9 @@ function Header() {
         bgcolor={Colors.PERFICIENT_COLOR}
         alignItems="center"
         justifyContent="center" 
-        padding="2px"  
+        padding="2px"
+        position='fixed'  
+        width={'100%'}
     >
         <Box
             component="img"

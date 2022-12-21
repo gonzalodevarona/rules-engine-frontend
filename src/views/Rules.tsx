@@ -7,6 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+import * as Colors from '../constants/colors';
 import { useExpressions } from './Home';
 import { mapOperator } from '../utils/mapOperator';
 
@@ -17,7 +18,7 @@ function Rules() {
   
 
   const expressions = useExpressions();
-  const [rules, setRules] = useState([{index: 0, rule:''}]);
+  const [rules, setRules] = useState([{index: 0, rule:'', decoded:''}]);
   const [currentRule, setCurrentRule] = useState(rules[0]);
 
   
@@ -48,7 +49,7 @@ function Rules() {
   const addNewRule = () => {
     const lastRule = getLastRule()
 
-    setRules(oldArray => [...oldArray, {index: (lastRule.index+1), rule:''}]);
+    setRules(oldArray => [...oldArray, {index: (lastRule.index+1), rule:'', decoded:''}]);
   }
 
   const getLastRule = () => {
@@ -103,6 +104,7 @@ function Rules() {
   
   const my3= {my:'3%'}
   const grayBg= {bgcolor:'#f0f0f0', borderRight: 1}
+  const btnStyle = {width:280, height:45, borderRadius:3}
 
 
   const renderTabs = () =>{
@@ -170,6 +172,18 @@ function Rules() {
         />
 
       <Box sx={my3}>Tu regla:</Box>
+      <Box sx={my3}>{currentRule.decoded}</Box>
+      
+      <Box sx={[my3,{display:"flex", justifyContent:"space-evenly", alignItems:'center' }]}>
+        
+        <Button sx={[btnStyle, {bgcolor: Colors.ICESI_COLOR}]} variant="contained" >
+          Consultar Regla 🔎
+        </Button>
+
+        <Button sx={[btnStyle, {bgcolor: Colors.PERFICIENT_COLOR}]} variant="contained" >
+          Empezar de nuevo ⤴️
+        </Button>
+      </Box>
     </Stack>
   )
 }
