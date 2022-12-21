@@ -77,14 +77,21 @@ function Rules() {
   }
 
   const handleCurrentRuleChange = (newValue : string) => {
-    setCurrentRule({index:currentRule.index,  rule: newValue});
+    
+    const foundExp = rules.filter(item => item.index === currentRule.index)
+    foundExp[0].rule = newValue;
+    setCurrentRule({...currentRule,  rule: newValue});
   }
 
   
   useEffect(() => {
+
+
     const foundExp = rules.filter(item => item.index === currentRule.index)
     
     handleCurrentRuleChange(foundExp[0].rule);
+
+    
   }, [currentRule.index])
 
 

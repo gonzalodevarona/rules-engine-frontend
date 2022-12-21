@@ -5,6 +5,7 @@ import Expressions from './Expressions';
 import Button from '@mui/material/Button';
 
 import GetColumnsService from '../services/GetColumnsService'
+import GetTablesNamesService from '../services/GetTablesNamesService'
 import Rules from './Rules';
 
 
@@ -12,7 +13,12 @@ const ExpressionsContext = createContext([]);
 
 function Home() {
 
-    console.log(GetColumnsService())
+    const x = async () => {
+        const y = await GetTablesNamesService();
+        console.log(await GetColumnsService(y.data[2].tableName));
+        
+    }
+    
   
     const [page, setPage] = useState(1);
 
