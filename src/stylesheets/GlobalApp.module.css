@@ -1,0 +1,26 @@
+/******************/
+/* CUSTOM CLASSES */
+/******************/
+
+.container {
+    margin: 0 30%;
+}
+  
+@media (max-width: 768px) {
+    .container {
+        margin: 0 10%;
+    }
+}
+
+.flexbox{
+    display: flex;
+    width:100%;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+@media (max-width: 768px) {
+    .flexbox {
+        flex-direction: column;
+    }
+}

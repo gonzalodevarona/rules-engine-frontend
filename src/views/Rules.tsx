@@ -7,6 +7,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 
+import * as Styles from '../constants/styles';
 import * as Colors from '../constants/colors';
 import { useExpressions } from './Home';
 import { mapOperator } from '../utils/mapOperator';
@@ -20,6 +21,7 @@ function Rules() {
   const expressions = useExpressions();
   const [rules, setRules] = useState([{index: 0, rule:'', decoded:''}]);
   const [currentRule, setCurrentRule] = useState(rules[0]);
+  let decodedRules: string[] = [];
 
   
 
@@ -73,27 +75,57 @@ function Rules() {
       decodedExp.push(`${index}: ${column} ${mapOperator(operator)} ${nextValue}`);
       
     })
-
+    decodedRules = decodedExp;
     return decodedExp.map( (line) => <Box>{line}</Box>);
+  }
+
+  const filterRulesByIndex = (ind: number) => {
+    return rules.filter(item => item.index === ind)
   }
 
   const handleCurrentRuleChange = (newValue : string) => {
     
-    const foundExp = rules.filter(item => item.index === currentRule.index)
+    const foundExp = filterRulesByIndex(currentRule.index)
     foundExp[0].rule = newValue;
     setCurrentRule({...currentRule,  rule: newValue});
   }
 
   
   useEffect(() => {
-
-
-    const foundExp = rules.filter(item => item.index === currentRule.index)
+    const foundExp = filterRulesByIndex(currentRule.index)
     
     handleCurrentRuleChange(foundExp[0].rule);
-
-    
   }, [currentRule.index])
+
+
+  useEffect(() => {
+
+    let ruleDecoded = currentRule.rule
+
+    const decodedRulesSplit = decodedRules.map(rule => rule.split(': '))
+
+    let decoded = '';
+    
+    for (let i = 0; i < ruleDecoded.length; i++) {
+      const strCast = parseInt(ruleDecoded.charAt(i));
+
+      let line = [];
+
+      
+      if(!Number.isNaN(strCast)){
+        line = decodedRulesSplit.filter(item => parseInt(item[0]) === strCast)
+        decoded = ruleDecoded.replaceAll(ruleDecoded.charAt(i),' '+line[0][1]+' ')
+
+      }
+      
+    }
+    setCurrentRule({...currentRule,  decoded: decoded});
+
+    const foundExp = filterRulesByIndex(currentRule.index)
+    foundExp[0].decoded = decoded;
+    
+  }, [currentRule.rule])
+
 
 
 
@@ -104,7 +136,7 @@ function Rules() {
   
   const my3= {my:'3%'}
   const grayBg= {bgcolor:'#f0f0f0', borderRight: 1}
-  const btnStyle = {width:280, height:45, borderRadius:3}
+
 
 
   const renderTabs = () =>{
@@ -176,11 +208,11 @@ function Rules() {
       
       <Box sx={[my3,{display:"flex", justifyContent:"space-evenly", alignItems:'center' }]}>
         
-        <Button sx={[btnStyle, {bgcolor: Colors.ICESI_COLOR}]} variant="contained" >
+        <Button sx={Styles.BIG_BTN_STYLE} variant="contained" >
           Consultar Regla 🔎
         </Button>
 
-        <Button sx={[btnStyle, {bgcolor: Colors.PERFICIENT_COLOR}]} variant="contained" >
+        <Button sx={[Styles.BIG_BTN_STYLE, {bgcolor: Colors.PERFICIENT_COLOR}]} variant="contained" >
           Empezar de nuevo ⤴️
         </Button>
       </Box>

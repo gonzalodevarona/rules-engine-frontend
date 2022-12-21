@@ -18,6 +18,7 @@ import * as Colors from '../../constants/colors';
 import * as Styles from '../../constants/styles';
 import IColumn from '../interfacesExpressions/IColumn';
 import SimpleExpressionProps from '../interfacesExpressions/SimpleExpressionProps';
+import CSS from '../../stylesheets/GlobalApp.module.css'
 
 
 
@@ -184,14 +185,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
         
         <Box  sx={{ display:'flex', width:'100%' }}>
         
-          <Box 
-            sx={{
-              display:'flex',
-              width:'100%',
-              alignItems:"center",
-              justifyContent:"space-evenly" 
-            }}
-          >
+          <Box className={CSS.flexbox}>
             
             <FormControl style={Styles.SMALL_FIELD_W}>
               <InputLabel id="demo-simple-select-label">Columna</InputLabel>
