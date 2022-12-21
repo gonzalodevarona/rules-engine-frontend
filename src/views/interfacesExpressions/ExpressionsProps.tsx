@@ -1,5 +1,6 @@
 
 
 export default interface ExpressionsProps {
-    setExpressions: any
+    setExpressions: any,
+    setExpressionsInfoOk: any
   }

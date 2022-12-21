@@ -49,6 +49,9 @@ function Expressions(expressionsProps : ExpressionsProps) {
   ];
 
 
+
+
+
   useEffect(() => {
     if(simpleExpressions.length === 3){
       setDisableAddSimpleExpressions(true);
@@ -75,6 +78,25 @@ function Expressions(expressionsProps : ExpressionsProps) {
     setSimpleExpressions(newArr);
   }
 
+  const checkExpressionsInfo = () => {
+    for (let exp  in expressionsInfo) {
+      for (let val  in expressionsInfo[exp]) {
+        if(expressionsInfo[exp][val]===''){
+          
+          expressionsProps.setExpressionsInfoOk(false);
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    expressionsProps.setExpressions(expressionsInfo);
+    
+  }, [expressionsInfo])
+
+
+
+
   const renderSimpleExpressions = () => {
     return simpleExpressions.map(
       (exp : any) => exp.element
@@ -83,10 +105,7 @@ function Expressions(expressionsProps : ExpressionsProps) {
   
 
 
-  useEffect(() => {
-    expressionsProps.setExpressions(expressionsInfo);
-    console.log(expressionsInfo)
-  }, [expressionsInfo])
+ 
   
   return (
     <Stack sx={{mx:'20%'}}>

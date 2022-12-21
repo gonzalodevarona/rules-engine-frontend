@@ -103,7 +103,18 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
 
 
   const handleNextLineChange = (e: any) => {
-    setNextLineValue(e.target.value);
+    const newNextLineValue = e.target.value;
+    
+    if(selectedNextLine === 'value' && selectedColumn.type === 'Number'){
+      
+      const testDomain = new RegExp("^[123456789.]+$")
+      if(!testDomain.test(newNextLineValue)){
+      
+        return;
+      }
+    }
+    
+    setNextLineValue(newNextLineValue);
   };
 
   const handleColumnChange = (e: any) => {
@@ -155,7 +166,7 @@ function SimpleExpression(  propColumns : SimpleExpressionProps ) {
   const renderNextLine = () => {
 
     if(selectedNextLine === 'value'){
-     return <TextField disabled={isNextLineDisabled} onChange={handleNextLineChange} id="outlined-basic" variant="outlined" />
+     return <TextField value={nextLineValue} disabled={isNextLineDisabled} onChange={handleNextLineChange} id="outlined-basic" variant="outlined" />
     } else{
      return <FormControl disabled={isNextLineDisabled} style={Styles.SMALL_FIELD_W}>
                <Select

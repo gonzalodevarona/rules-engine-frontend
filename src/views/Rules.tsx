@@ -23,7 +23,6 @@ function Rules() {
   const [currentRule, setCurrentRule] = useState(rules[0]);
   let decodedRules: string[] = [];
 
-  
 
   const defineRegex = () => {
     
@@ -69,7 +68,9 @@ function Rules() {
       const operator = item.operator
       let nextValue = item.nextValue
 
-      if(item.nextType = 'column') {nextValue = item.nextValue.name}
+      if(typeof nextValue === 'object' && nextValue !== null) {
+        nextValue = item.nextValue.name
+      } 
       
 
       decodedExp.push(`${index}: ${column} ${mapOperator(operator)} ${nextValue}`);
@@ -101,22 +102,25 @@ function Rules() {
   useEffect(() => {
 
     let ruleDecoded = currentRule.rule
-
+    
     const decodedRulesSplit = decodedRules.map(rule => rule.split(': '))
+    console.log(decodedRulesSplit)
 
     let decoded = '';
     
     for (let i = 0; i < ruleDecoded.length; i++) {
-      const strCast = parseInt(ruleDecoded.charAt(i));
 
-      let line = [];
+      const regex = new RegExp("^[1234]+$");
+      if (regex.test(ruleDecoded[i])){
+        
+        const filteredElement = decodedRulesSplit.filter(element => element[0] ===ruleDecoded[i])
+        
+        decoded += filteredElement[0][1]
 
-      
-      if(!Number.isNaN(strCast)){
-        line = decodedRulesSplit.filter(item => parseInt(item[0]) === strCast)
-        decoded = ruleDecoded.replaceAll(ruleDecoded.charAt(i),' '+line[0][1]+' ')
-
+      } else {
+        decoded += ruleDecoded[i]
       }
+      decoded += ' '
       
     }
     setCurrentRule({...currentRule,  decoded: decoded});
@@ -212,7 +216,7 @@ function Rules() {
           Consultar Regla 🔎
         </Button>
 
-        <Button sx={[Styles.BIG_BTN_STYLE, {bgcolor: Colors.PERFICIENT_COLOR}]} variant="contained" >
+        <Button onClick={() => window.location.reload()} sx={[Styles.BIG_BTN_STYLE, {bgcolor: Colors.PERFICIENT_COLOR}]} variant="contained" >
           Empezar de nuevo ⤴️
         </Button>
       </Box>
